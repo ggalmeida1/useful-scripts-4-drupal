@@ -15,7 +15,7 @@
 
 
 
-#Mudando para diretorio home do usuario
+#Mudando para diretorio HOME
 
  echo "Instalando dependencias necessárias para o script. Por gentileza, digitar sua senha sempre que solicitado."
 
@@ -32,10 +32,6 @@
 
 echo "Inicializando a instalação do Docker"
                                        
-
-echo "Atualizando sua lista existente de pacotes\n"
-
-sudo apt update 
 
 echo "Instalando alguns pacotes pré-requisito que deixam o apt usar pacotes pelo HTTPS:\n"
 sudo apt install apt-transport-https ca-certificates software-properties-common
@@ -55,7 +51,6 @@ echo "Checando que você está prestes a instalar do repositório do Docker ao i
 sudo apt-cache policy docker-ce  | head -n 3 
 
 
-
 echo "Iniciando a Instalação do Docker: \n"
 sudo apt install docker-ce
 
@@ -65,16 +60,9 @@ service docker status | head -n5
 
 echo "Iniciando a configuração para executar o Comando Docker Sem Sudo\n"
 #evitar digitar  sempre que você executar o comando docker, adicione seu nome de usuário no grupo docker:
-#not working
 
 sudo usermod -aG docker ${USER}
 
-#Para inscrever o novo membro ao grupo, saia do servidor e logue novamente, ou digite o seguinte:
-echo "Por favor, insira sua senha:\n"
-su - ${USER}
-
-
-#Você será solicitado a digitar a senha do seu usuário para continuar.
 
 #Confirme que seu usuário agora está adicionado ao grupo docker digitando:
 
@@ -96,8 +84,6 @@ cd ~
 
 echo "Foi instalada a ultima versão do Lando!"
 lando version
-
-
 
 echo "####################################################################################################"
 
@@ -124,19 +110,17 @@ code --install-extension neilbrayfield.php-docblocker
 
 
 ##ATENCAO: Não é possivel instalar as extensões do chrome via terminal: https://stackoverflow.com/questions/16800696/how-install-crx-chrome-extension-via-command-line
-echo "####################################################################################################"
+echo "#################################################################################"
 echo "Iniciando a instalação do PHP\n\n"
 
 sudo apt-get update
 sudo apt-get install php7.4 php7.4-cli php7.4-mbstring php-xml
 
 
-
-echo "####################################################################################################"
+echo "#################################################################################"
 echo "Iniciando a instalação do Composer\n\n"
 
 #https://getcomposer.org/download/
-
 
 
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
@@ -144,38 +128,34 @@ php -r "if (hash_file('sha384', 'composer-setup.php') === '756890a4488ce9024fc62
 php composer-setup.php
 php -r "unlink('composer-setup.php');"
 
- mv composer.phar /usr/local/bin/composer
+sudo mv composer.phar /usr/local/bin/composer
 
 echo "Composer foi instalado com sucesso! \n"
 
 composer -V
 
 
-
-
-
-echo "####################################################################################################"
+echo "#################################################################################"
 echo "Iniciando a instalação do PHPCS\n\n"
 
 
 composer global require drupal/coder dealerdirect/phpcodesniffer-composer-installer
 
-echo "Verificando a instalação: \n"
-composer global show -P >> /tmp/log.txt
-phpcs --config-set installed_paths ~/.config/composer/vendor/drupal/coder/coder_sniffer
-
 
 phpcs -i | grep Drupal
 
-sudo ln -s /usr/local/bin/HOME/.config/composer/vendor/squizlabs/php_codesniffer/bin/phpcs
-sudo ln -s /usr/local/bin/HOME/.config/composer/vendor/squizlabs/php_codesniffer/bin/phpcbf
+cd /usr/local/bin
 
+sudo ln -s $HOME/.config/composer/vendor/squizlabs/php_codesniffer/bin/phpcs
+sudo ln -s $HOME/.config/composer/vendor/squizlabs/php_codesniffer/bin/phpcbf
 
-echo "####################################################################################################"
-echo "Finalizando a instalação e removendo arquivos temporários\n\n"
+echo "Verificando a instalação: \n"
+
+phpcs --config-set installed_paths ~/.config/composer/vendor/drupal/coder/coder_sniffer
+
+echo "#################################################################################"
 echo "Concluído!"
 exit
 
 
-
-##END OF FILE ##
+## END OF FILE ##
