@@ -19,7 +19,13 @@
 
  echo "Instalando dependencias necessárias para o script. Por gentileza, digitar sua senha sempre que solicitado."
 
- cd ~
+ cd ~/Downloads
+
+ sudo apt update
+ sudo apt upgrade
+ sudo apt install wget
+ sudo apt install curl
+ 
 
 ########------------- Instalação do Docker ---------------#########
 
@@ -32,20 +38,21 @@ echo "Atualizando sua lista existente de pacotes\n"
 sudo apt update 
 
 echo "Instalando alguns pacotes pré-requisito que deixam o apt usar pacotes pelo HTTPS:\n"
-sudo apt install apt-transport-https ca-certificates curl software-properties-common
+sudo apt install apt-transport-https ca-certificates software-properties-common
 
 echo "Adicionando a chave GPG para o repositório oficial do Docker no seu sistema:\n"
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg |  apt-key add -
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
 
 echo "Adicionando o repositório do Docker às fontes do APT:\n"
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+
 
 echo "Atualizando o banco de dados do pacote com os pacotes do Docker do recém adicionado repositório:\n"
 sudo apt update
 
 echo "Checando que você está prestes a instalar do repositório do Docker ao invés do repositório padrão do Ubuntu:\n"
-echo "Log da instalação do Docker\n" > /tmp/aptcache_docker-ce.log
-sudo apt-cache policy docker-ce  | head -n 3 &>> /tmp/aptcache_docker-ce.log
+sudo apt-cache policy docker-ce  | head -n 3 
 
 
 
@@ -53,16 +60,14 @@ echo "Iniciando a Instalação do Docker: \n"
 sudo apt install docker-ce
 
 echo "O Docker agora será instalado, o daemon iniciado e o processo habilitado a iniciar no boot. Verificando se ele está funcionando:\n"
-#not working
 service docker status | head -n5
-
 
 
 echo "Iniciando a configuração para executar o Comando Docker Sem Sudo\n"
 #evitar digitar  sempre que você executar o comando docker, adicione seu nome de usuário no grupo docker:
 #not working
 
-usermod -aG docker ${USER}
+sudo usermod -aG docker ${USER}
 
 #Para inscrever o novo membro ao grupo, saia do servidor e logue novamente, ou digite o seguinte:
 echo "Por favor, insira sua senha:\n"
@@ -173,3 +178,4 @@ exit
 
 
 
+##END OF FILE ##
